@@ -1,0 +1,404 @@
+@import "tailwindcss";
+
+:root {
+  --background: var(--color-surface-base);
+  --foreground: var(--color-ink-primary);
+}
+
+@theme inline {
+  /* Color system — Figma node 27:6940 (swatch fills).
+     Green stops come from the Default / Secondary buttons (node 40:1138).
+     Use token classes (bg-brand-deep, text-ink-muted), never raw hex in components. */
+
+  --color-brand-green: #116823;
+  --color-brand-green-bright: #188930;
+  --color-brand-primary: #d99b34;
+  --color-brand-accent: #d99b34;
+  --color-brand-deep: #1e1e1e;
+  --color-brown: #261609;
+
+  --color-surface-base: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-container: #c0c0c0;
+  /* Faintest fill — benefit cards and the upload zone (Figma 212:9262). */
+  --color-surface-subtle: #fafafa;
+  /* Sunken card fill — Certified badges sit on this with a soft shadow. */
+  --color-surface-sunken: #f5f5f5;
+  /* Admin auth backdrop — Figma node 178:8252 (Background over Dashboard). */
+  --color-surface-muted: #f3f4f6;
+
+  --color-ink-primary: #1e1e1e;
+  --color-ink-muted: #494b49;
+  --color-ink-on-deep: #dfdfdf;
+  --color-ink-on-deep-muted: #c0c0c0;
+  /* Subtle ink — eyebrows and secondary links on light surfaces.
+     Figma `text2`. Decorative weight only; never a price or a form label. */
+  --color-ink-subtle: #c0c0c0;
+
+  --color-line-default: #dfdfdf;
+  /* Form-control hairline — Figma checkbox 212:9056, radio 212:9662. */
+  --color-line-control: #767676;
+  /* Hairline inside admin panels — Figma node 169:5079. */
+  --color-line-subtle: #f0f0f0;
+
+  --color-state-positive: #46e048;
+  --color-state-warning: #fff957;
+  /* Readable ink on the warning wash; the raw yellow fails on white. */
+  --color-state-warning-ink: #8a7500;
+  /* Admin `red` / `success` pair — Figma node 166:1817. Always paired with a
+     word, never colour alone. */
+  --color-state-critical: #ff5959;
+  /* Readable green for status pill text; the raw positive is too light. */
+  --color-state-positive-ink: #2fa531;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+
+  --radius: 0.25rem;
+
+  /* Type ramp — Figma node 13:1571. Poppins; weight may vary by section.
+     Each `text-*` utility sets size, line-height, tracking and weight. */
+  --text-h1: 3rem;
+  --text-h1--line-height: 3.5rem;
+  --text-h1--letter-spacing: -3px;
+  --text-h1--font-weight: 500;
+
+  --text-h2: 2.25rem;
+  --text-h2--line-height: 2.5rem;
+  --text-h2--letter-spacing: -2.5px;
+  --text-h2--font-weight: 500;
+
+  --text-h3: 1.75rem;
+  --text-h3--line-height: 1.875rem;
+  --text-h3--letter-spacing: -1.5px;
+  --text-h3--font-weight: 500;
+
+  --text-h4: 1.25rem;
+  --text-h4--line-height: 1.5rem;
+  --text-h4--letter-spacing: -1px;
+  --text-h4--font-weight: 500;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.375rem;
+  --text-body--letter-spacing: -0.5px;
+  --text-body--font-weight: 500;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.375rem;
+  --text-body-sm--letter-spacing: -0.25px;
+  --text-body-sm--font-weight: 400;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.25rem;
+  --text-caption--letter-spacing: -0.1px;
+  --text-caption--font-weight: 400;
+
+  --text-tiny: 0.625rem;
+  --text-tiny--line-height: 1.5rem;
+  --text-tiny--letter-spacing: 0px;
+  --text-tiny--font-weight: 500;
+
+  /* Editorial lead — Figma Desktop - 5 body (Poppins Regular 28/42). */
+  --text-lead: 1.75rem;
+  --text-lead--line-height: 2.625rem;
+  --text-lead--letter-spacing: -1.5px;
+  --text-lead--font-weight: 400;
+
+  --tracking-h1: -3px;
+  --tracking-h2: -2.5px;
+  --tracking-h3: -1.5px;
+  --tracking-h4: -1px;
+  --tracking-body: -0.5px;
+  --tracking-body-sm: -0.25px;
+  --tracking-caption: -0.1px;
+}
+
+/* Buttons — Figma node 40:1138. Pair `btn` with a variant. */
+@utility btn {
+  display: inline-flex;
+  height: calc(var(--spacing) * 12);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--spacing) * 2);
+  border-radius: var(--radius);
+  border-style: solid;
+  border-width: 0;
+  padding-inline: calc(var(--spacing) * 6);
+  padding-block: calc(var(--spacing) * 2);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  letter-spacing: var(--text-body--letter-spacing);
+  font-weight: var(--text-body--font-weight);
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand-accent);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition-property: opacity;
+    transition-duration: 200ms;
+  }
+}
+
+@utility btn-primary {
+  gap: calc(var(--spacing) * 1);
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-brand-green),
+    var(--color-brand-green-bright)
+  );
+  color: var(--color-ink-on-deep);
+}
+
+@utility btn-secondary {
+  border-width: 1px;
+  border-color: var(--color-brand-green);
+  background-color: transparent;
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-brand-green),
+    var(--color-brand-green-bright)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility btn-white {
+  background-color: var(--color-surface-container);
+  color: var(--color-ink-primary);
+}
+
+@utility btn-gold {
+  background-color: var(--color-brand-accent);
+  color: var(--color-ink-on-deep);
+}
+
+@utility btn-glassy {
+  background-color: transparent;
+  color: var(--color-ink-on-deep);
+}
+
+@utility btn-dark {
+  background-color: var(--color-brand-deep);
+  color: var(--color-ink-on-deep);
+}
+
+/* Admin form controls — Figma nodes 212:9056 (checkbox) and 212:9662 (radio).
+   13px, #767676 hairline while empty. Checked, the box fills gold behind a
+   white tick; the radio keeps its white face, takes a gold ring and an 8px
+   gold dot. Both are real inputs with `appearance: none`, so keyboard and
+   screen-reader behaviour is the platform's. */
+@utility control-checkbox {
+  height: calc(var(--spacing) * 3.25);
+  width: calc(var(--spacing) * 3.25);
+  flex-shrink: 0;
+  cursor: pointer;
+  appearance: none;
+  border: 1px solid var(--color-line-control);
+  border-radius: 2px;
+  background-color: var(--color-surface-base);
+
+  &:checked {
+    border-color: var(--color-brand-accent);
+    background-color: var(--color-brand-accent);
+    background-image: url("/icons/admin/check-white.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 11px 11px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand-accent);
+    outline-offset: 2px;
+  }
+}
+
+@utility control-radio {
+  height: calc(var(--spacing) * 3.25);
+  width: calc(var(--spacing) * 3.25);
+  flex-shrink: 0;
+  cursor: pointer;
+  appearance: none;
+  border: 1px solid var(--color-line-control);
+  border-radius: calc(infinity* 1px);
+  background-color: var(--color-surface-base);
+
+  &:checked {
+    border-color: var(--color-brand-accent);
+    background-image: radial-gradient(
+      circle at center,
+      var(--color-brand-accent) 0 4px,
+      transparent 4px
+    );
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Section rhythm — one source of truth for the vertical space between two
+   sections. Every home/content section uses this; full-viewport set pieces
+   (hero, the pinned Certified track) are the only exceptions. */
+@utility section-pad {
+  padding-inline: calc(var(--spacing) * 6);
+  padding-block: calc(var(--spacing) * 10);
+
+  @media (width >= 64rem) {
+    padding-inline: calc(var(--spacing) * 30);
+    padding-block: calc(var(--spacing) * 20);
+  }
+}
+
+/* Scrolls without a visible scrollbar. The content still scrolls by wheel,
+   touch, keyboard and programmatic means — only the track is hidden. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Admin panel glow — Figma `bgeffect` (0 0 8px #1E1E1E33). The storefront's
+   one soft shadow is offset; admin panels sit on glass and need an even halo. */
+@utility panel-glow {
+  box-shadow: 0 0 8px 0
+    color-mix(in srgb, var(--color-ink-primary) 20%, transparent);
+}
+
+/* Admin auth backdrop — Figma node 178:8252. Five soft gold radial glows on a
+   near-white surface, each at the accent's 25% effective alpha (the Figma
+   layers stack a 50% gradient inside a 50% container). */
+@utility auth-aurora {
+  background-color: var(--color-surface-muted);
+  background-image:
+    radial-gradient(
+      50% 71% at 15% 18%,
+      color-mix(in srgb, var(--color-brand-accent) 25%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 71% at 15% 107%,
+      color-mix(in srgb, var(--color-brand-accent) 25%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 59% at 50% 65%,
+      color-mix(in srgb, var(--color-brand-accent) 25%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      30% 47% at 60% 30%,
+      color-mix(in srgb, var(--color-brand-accent) 25%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 77% at 87% 85%,
+      color-mix(in srgb, var(--color-brand-accent) 25%, transparent) 0%,
+      transparent 70%
+    );
+}
+
+/* Carousel slide animations */
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-in-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-to-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fade-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@utility animate-slide-in-right {
+  animation: slide-in-from-right 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-slide-out-left {
+  animation: slide-out-to-left 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-slide-in-left {
+  animation: slide-in-from-left 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-slide-out-right {
+  animation: slide-out-to-right 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-fade-slide-in-right {
+  animation: fade-slide-in-right 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-fade-slide-in-left {
+  animation: fade-slide-in-left 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  letter-spacing: var(--text-body--letter-spacing);
+  font-weight: var(--text-body--font-weight);
+}
