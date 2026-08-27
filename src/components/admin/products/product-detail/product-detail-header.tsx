@@ -24,7 +24,7 @@ export function ProductDetailHeader(props: Readonly<ProductDetailHeaderProps>) {
     <div className="flex flex-col justify-between gap-4 rounded bg-surface-base/70 p-4 shadow-xs lg:flex-row lg:items-start">
       <div className="flex items-start gap-4 sm:gap-6">
         <Link
-          href="/admin/products"
+          href="/products"
           aria-label="Back to products"
           className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
         >

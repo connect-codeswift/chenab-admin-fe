@@ -1,6 +1,6 @@
 import { OrderCard } from "@/components/admin/orders/order-card";
 import type { OrderLineItem } from "@/components/admin/orders/order-detail-types";
-import { formatPrice } from "@/components/products/products-data";
+import { formatPrice } from "@/lib/format";
 
 export type OrderItemsCardProps = Readonly<{
   items: readonly OrderLineItem[];

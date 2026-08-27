@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { OrderCard } from "@/components/admin/orders/order-card";
 import type { OrderPaymentDetail } from "@/components/admin/orders/order-detail-types";
-import { formatPrice } from "@/components/products/products-data";
+import { formatPrice } from "@/lib/format";
 
 export type OrderPaymentCardProps = Readonly<{
   payment: OrderPaymentDetail;

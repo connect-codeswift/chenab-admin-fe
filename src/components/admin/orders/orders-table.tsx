@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { OrderStatusPill } from "@/components/admin/orders/order-status-pill";
 import type { OrderRow } from "@/components/admin/orders/orders-types";
-import { formatPrice } from "@/components/products/products-data";
+import { formatPrice } from "@/lib/format";
 import {
   createDataTableColumnHelper,
   DataTable,

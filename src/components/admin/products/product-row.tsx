@@ -8,7 +8,7 @@ import {
   VisibilityBadge,
 } from "@/components/admin/products/product-badges";
 import type { ProductRow as ProductRowData } from "@/components/admin/products/products-types";
-import { formatPrice } from "@/components/products/products-data";
+import { formatPrice } from "@/lib/format";
 
 export type ProductRowProps = Readonly<{
   product: ProductRowData;

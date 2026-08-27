@@ -15,7 +15,7 @@ import type {
   XAxisTickContentProps,
 } from "recharts";
 import type { RevenueBar } from "@/components/admin/dashboard/dashboard-types";
-import { formatPrice } from "@/components/products/products-data";
+import { formatPrice } from "@/lib/format";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export type RevenueChartProps = Readonly<{

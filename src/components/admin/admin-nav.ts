@@ -8,30 +8,30 @@ export type AdminNavLink = Readonly<{
    land with their own screens. */
 export const adminNavLinks: readonly AdminNavLink[] = [
   {
-    href: "/admin",
+    href: "/",
     label: "Dashboard",
     icon: "/icons/admin/nav-dashboard.svg",
   },
   {
-    href: "/admin/orders",
+    href: "/orders",
     label: "Orders",
     icon: "/icons/admin/nav-orders.svg",
   },
   {
-    href: "/admin/products",
+    href: "/products",
     label: "Products",
     icon: "/icons/admin/nav-products.svg",
   },
   {
-    href: "/admin/inquiries",
+    href: "/inquiries",
     label: "Inquiries",
     icon: "/icons/admin/nav-inquiries.svg",
   },
 ];
 
 export function isAdminNavLinkActive(pathname: string, href: string): boolean {
-  if (href === "/admin") {
-    return pathname === "/admin";
+  if (href === "/") {
+    return pathname === "/";
   }
 
   return pathname === href || pathname.startsWith(`${href}/`);

@@ -5,7 +5,7 @@ import type {
   OrderStatus,
   RecentOrder,
 } from "@/components/admin/dashboard/dashboard-types";
-import { formatPrice } from "@/components/products/products-data";
+import { formatPrice } from "@/lib/format";
 import {
   createDataTableColumnHelper,
   DataTable,
@@ -78,7 +78,7 @@ export function RecentOrders(props: Readonly<RecentOrdersProps>) {
           Recent orders
         </h2>
         <Link
-          href="/admin/orders"
+          href="/orders"
           className="rounded text-body-sm font-medium text-brand-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent"
         >
           View all

@@ -16,7 +16,7 @@ export function OrderSummaryBar(props: Readonly<OrderSummaryBarProps>) {
   return (
     <div className="flex items-start gap-4 rounded bg-surface-base/70 p-4 sm:gap-6">
       <Link
-        href="/admin/orders"
+        href="/orders"
         aria-label="Back to orders"
         className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
       >

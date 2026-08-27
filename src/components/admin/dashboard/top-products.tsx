@@ -1,5 +1,5 @@
 import type { TopProduct } from "@/components/admin/dashboard/dashboard-types";
-import { formatPrice } from "@/components/products/products-data";
+import { formatPrice } from "@/lib/format";
 
 export type TopProductsProps = Readonly<{
   products: readonly TopProduct[];
