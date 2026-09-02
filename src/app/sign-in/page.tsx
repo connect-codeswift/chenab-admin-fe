@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Suspense } from "react";
 import { AdminSignInForm } from "@/components/admin/admin-sign-in-form";
 
 export const metadata: Metadata = {
@@ -28,25 +28,9 @@ export default function AdminSignInPage() {
           </h1>
 
           <div className="w-full pt-8">
-            <AdminSignInForm />
-          </div>
-
-          <div className="w-full pt-5 text-center">
-            <Link
-              href="/forgotten-password"
-              className="rounded text-body-sm text-ink-subtle underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent"
-            >
-              Forgotten password
-            </Link>
-          </div>
-
-          <div className="w-full pt-8 text-center">
-            <Link
-              href="/"
-              className="rounded text-caption text-ink-subtle focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent"
-            >
-              ← Back to portal
-            </Link>
+            <Suspense fallback={null}>
+              <AdminSignInForm />
+            </Suspense>
           </div>
         </div>
       </section>

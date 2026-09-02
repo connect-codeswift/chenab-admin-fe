@@ -1,6 +1,6 @@
 export type ProductVisibility = "visible" | "hidden";
 
-export type SkuStatus = "in-stock" | "low" | "out";
+export type SkuStatus = "available" | "unavailable";
 
 /* No id of our own — useFieldArray supplies the React key. */
 export type SkuDraft = {
@@ -28,7 +28,8 @@ export type ProductFormValues = {
   tagline: string;
   heroLine: string;
   longDescription: string;
-  imageNames: string[];
+  /* Cloudinary secure URLs ready to send to the backend. */
+  images: string[];
   visibility: ProductVisibility;
   skus: SkuDraft[];
   benefits: ProductBenefit[];
@@ -59,9 +60,8 @@ export const PRODUCT_CATEGORIES = [
 ] as const;
 
 export const SKU_STATUS_LABEL: Record<SkuStatus, string> = {
-  "in-stock": "In stock",
-  low: "Low stock",
-  out: "Out of stock",
+  available: "Available",
+  unavailable: "Unavailable",
 };
 
 export const NUTRITION_ROWS: readonly Readonly<{
@@ -86,7 +86,7 @@ export const CERTIFICATIONS = [
 ] as const;
 
 export function createSkuDraft(size = ""): SkuDraft {
-  return { size, price: "", stock: "", status: "in-stock", active: true };
+  return { size, price: "", stock: "", status: "available", active: true };
 }
 
 export function createEmptyProductForm(): ProductFormValues {
@@ -96,7 +96,7 @@ export function createEmptyProductForm(): ProductFormValues {
     tagline: "",
     heroLine: "",
     longDescription: "",
-    imageNames: [],
+    images: [],
     visibility: "visible",
     skus: [createSkuDraft("1 kg")],
     benefits: Array.from({ length: BENEFIT_COUNT }, () => ({

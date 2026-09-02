@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -24,19 +25,19 @@ export function ProductRow(props: Readonly<ProductRowProps>) {
   return (
     <li className={borderClass}>
       <div className="flex items-center gap-4 px-6 py-4">
-        <span className="relative size-10 shrink-0 overflow-clip rounded bg-brand-accent/10">
+        <span className="relative size-14 shrink-0 overflow-clip rounded bg-brand-accent/10">
           <Image
             src={product.image}
             alt=""
             fill
-            sizes="40px"
+            sizes="56px"
             className="object-cover object-center"
           />
         </span>
 
         <span className="flex min-w-0 flex-1 flex-col">
           <Link
-            href={`/admin/products/${product.id}`}
+            href={`/products/${product.id}`}
             className="truncate rounded text-body-sm font-medium text-ink-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
           >
             {product.name}
@@ -54,17 +55,15 @@ export function ProductRow(props: Readonly<ProductRowProps>) {
             aria-expanded={open}
             aria-controls={panelId}
             onClick={() => setOpen(!open)}
-            className="flex size-6 cursor-pointer items-center justify-center rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+            className="flex size-6 cursor-pointer items-center justify-center rounded text-ink-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
           >
             <span className="sr-only">
               {open ? "Hide" : "Show"} {product.name} pack sizes
             </span>
-            <Image
-              src="/icons/admin/chevron-down.svg"
-              alt=""
-              width={15}
-              height={15}
-              className={`size-3.75 transition-transform duration-200 motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+            <Icon
+              icon="mdi:chevron-down"
+              className={`size-4 transition-transform duration-200 motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+              aria-hidden
             />
           </button>
         </span>

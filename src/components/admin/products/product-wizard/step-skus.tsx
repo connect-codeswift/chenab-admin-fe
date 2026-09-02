@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import type {
   ProductFormValues,
@@ -40,7 +40,7 @@ const headCellClass =
   "border-b border-line-subtle pb-2.5 text-left text-caption font-medium tracking-wider text-ink-muted uppercase";
 const bodyCellClass = "border-b border-surface-sunken py-2.5 align-middle";
 
-const STATUS_OPTIONS: readonly SkuStatus[] = ["in-stock", "low", "out"];
+const STATUS_OPTIONS: readonly SkuStatus[] = ["available", "unavailable"];
 
 /* Rows are react-hook-form field entries, so the table and the form always
    agree on which row is which. */
@@ -63,7 +63,9 @@ export function StepSkus(props: Readonly<StepSkusProps>) {
           aria-label="Pack size"
           placeholder="1 kg"
           className={`${controlClass} w-20`}
-          {...register(`skus.${row.index}.size`)}
+          {...register(`skus.${row.index}.size`, {
+            required: "Enter a pack size.",
+          })}
         />
       ),
     }),
@@ -76,7 +78,9 @@ export function StepSkus(props: Readonly<StepSkusProps>) {
           inputMode="numeric"
           placeholder="0"
           className={`${controlClass} w-25`}
-          {...register(`skus.${row.index}.price`)}
+          {...register(`skus.${row.index}.price`, {
+            required: "Enter a price.",
+          })}
         />
       ),
     }),
@@ -89,7 +93,9 @@ export function StepSkus(props: Readonly<StepSkusProps>) {
           inputMode="numeric"
           placeholder="0"
           className={`${controlClass} w-20`}
-          {...register(`skus.${row.index}.stock`)}
+          {...register(`skus.${row.index}.stock`, {
+            required: "Enter stock.",
+          })}
         />
       ),
     }),
@@ -132,13 +138,7 @@ export function StepSkus(props: Readonly<StepSkusProps>) {
           className="cursor-pointer rounded p-1 hover:bg-surface-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
         >
           <span className="sr-only">Remove pack size</span>
-          <Image
-            src="/icons/admin/trash.svg"
-            alt=""
-            width={14}
-            height={14}
-            className="size-3.5"
-          />
+          <Icon icon="mdi:trash-can-outline" className="size-3.5" aria-hidden />
         </button>
       ),
     }),
@@ -165,13 +165,7 @@ export function StepSkus(props: Readonly<StepSkusProps>) {
         onClick={() => append(createSkuDraft())}
         className="flex w-fit cursor-pointer items-center gap-1 rounded text-caption text-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
       >
-        <Image
-          src="/icons/admin/plus-accent.svg"
-          alt=""
-          width={12}
-          height={12}
-          className="size-3"
-        />
+        <Icon icon="mdi:plus" className="size-3 text-brand-accent" aria-hidden />
         Add size
       </button>
     </div>

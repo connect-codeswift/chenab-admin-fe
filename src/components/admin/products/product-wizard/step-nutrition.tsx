@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 import { useFormContext, useWatch } from "react-hook-form";
 import type { ProductFormValues } from "@/components/admin/products/product-wizard/product-form-types";
 import {
@@ -75,12 +75,10 @@ export function StepNutrition() {
                 className={`flex cursor-pointer items-center gap-1.5 rounded border px-3.5 py-1.5 text-caption font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent ${chipStateClass[selected ? "on" : "off"]}`}
               >
                 {selected ? (
-                  <Image
-                    src="/icons/admin/check-accent.svg"
-                    alt=""
-                    width={11}
-                    height={11}
-                    className="size-2.75"
+                  <Icon
+                    icon="mdi:check"
+                    className="size-3 text-brand-accent"
+                    aria-hidden
                   />
                 ) : null}
                 {name}

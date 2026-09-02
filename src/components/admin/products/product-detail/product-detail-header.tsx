@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,12 +14,21 @@ export type ProductDetailHeaderProps = Readonly<{
   priceRange: string;
   onSave: () => void;
   onDelete: () => void;
+  isSaving?: boolean;
+  isDeleting?: boolean;
 }>;
 
 /* Figma node 212:7853 — back link, 56px shot, title, meta row, then the two
    actions. */
 export function ProductDetailHeader(props: Readonly<ProductDetailHeaderProps>) {
-  const { product, priceRange, onSave, onDelete } = props;
+  const {
+    product,
+    priceRange,
+    onSave,
+    onDelete,
+    isSaving = false,
+    isDeleting = false,
+  } = props;
 
   return (
     <div className="flex flex-col justify-between gap-4 rounded bg-surface-base/70 p-4 shadow-xs lg:flex-row lg:items-start">
@@ -26,15 +36,9 @@ export function ProductDetailHeader(props: Readonly<ProductDetailHeaderProps>) {
         <Link
           href="/products"
           aria-label="Back to products"
-          className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+          className="shrink-0 rounded text-ink-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
         >
-          <Image
-            src="/icons/admin/arrow-back.svg"
-            alt=""
-            width={28}
-            height={28}
-            className="size-7"
-          />
+          <Icon icon="mdi:arrow-left" className="size-7" aria-hidden />
         </Link>
 
         <span className="relative size-14 shrink-0 overflow-clip rounded bg-brand-accent/10">
@@ -69,23 +73,19 @@ export function ProductDetailHeader(props: Readonly<ProductDetailHeaderProps>) {
         <button
           type="button"
           onClick={onDelete}
-          className="flex cursor-pointer items-center gap-2 rounded border border-state-critical/20 bg-surface-base px-5 py-2.5 text-body-sm font-medium text-state-critical focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+          disabled={isDeleting || isSaving}
+          className="flex cursor-pointer items-center gap-2 rounded border border-state-critical/20 bg-surface-base px-5 py-2.5 text-body-sm font-medium text-state-critical focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <Image
-            src="/icons/admin/trash-red.svg"
-            alt=""
-            width={15}
-            height={15}
-            className="size-3.75"
-          />
-          Delete
+          <Icon icon="mdi:trash-can-outline" className="size-4" aria-hidden />
+          {isDeleting ? "Deleting…" : "Delete"}
         </button>
         <button
           type="button"
           onClick={onSave}
-          className="cursor-pointer rounded bg-brand-accent px-5 py-2.5 text-body-sm font-medium text-surface-base transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent motion-reduce:transition-none"
+          disabled={isSaving || isDeleting}
+          className="cursor-pointer rounded bg-brand-accent px-5 py-2.5 text-body-sm font-medium text-surface-base transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Save changes
+          {isSaving ? "Saving…" : "Save changes"}
         </button>
       </div>
     </div>

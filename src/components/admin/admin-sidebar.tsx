@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,6 +9,7 @@ import {
   isAdminNavLinkActive,
   type AdminNavLink,
 } from "@/components/admin/admin-nav";
+import { logout } from "@/lib/auth/logout";
 
 const linkBaseClass =
   "flex h-12 shrink-0 items-center gap-3 rounded px-4 py-3 text-body-sm lg:w-52.5 lg:px-5 lg:text-body focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent";
@@ -32,13 +34,7 @@ function AdminNavItem(
       aria-current={active ? "page" : undefined}
       className={`${linkBaseClass} ${linkStateClass[state]}`}
     >
-      <Image
-        src={link.icon}
-        alt=""
-        width={18}
-        height={18}
-        className="size-4.5 shrink-0"
-      />
+      <Icon icon={link.icon} className="size-4.5 shrink-0" aria-hidden />
       {link.label}
     </Link>
   );
@@ -84,20 +80,23 @@ export function AdminSidebar() {
         </div>
       </nav>
 
-      <div className="hidden border-t border-surface-base/10 px-5 py-4 lg:block">
+      <div className="flex items-center justify-between gap-3 border-t border-surface-base/10 px-4 py-3 lg:flex-col lg:items-stretch lg:gap-3 lg:px-5 lg:py-4">
         <Link
           href="/"
-          className="flex items-center gap-2 rounded text-tiny text-ink-on-deep-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+          className="flex items-center gap-2 rounded text-body-sm text-ink-on-deep-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
         >
-          <Image
-            src="/icons/admin/view-site.svg"
-            alt=""
-            width={12}
-            height={12}
-            className="size-3 shrink-0"
-          />
+          <Icon icon="mdi:open-in-new" className="size-4 shrink-0" aria-hidden />
           View site
         </Link>
+
+        <button
+          type="button"
+          onClick={logout}
+          className="flex cursor-pointer items-center gap-2 rounded text-body-sm text-ink-on-deep-muted transition-colors hover:text-ink-on-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+        >
+          <Icon icon="mdi:logout" className="size-4 shrink-0" aria-hidden />
+          Log out
+        </button>
       </div>
     </div>
   );

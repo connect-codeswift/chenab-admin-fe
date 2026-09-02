@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { Icon } from "@iconify/react";
 import { OrderCard } from "@/components/admin/orders/order-card";
 import type { OrderPaymentDetail } from "@/components/admin/orders/order-detail-types";
 import { formatPrice } from "@/lib/format";
@@ -19,12 +21,10 @@ export function OrderPaymentCard(props: Readonly<OrderPaymentCardProps>) {
           </p>
           {payment.confirmedAt ? (
             <p className="flex items-center gap-1 pt-0.5 text-body-sm text-state-positive-ink">
-              <Image
-                src="/icons/admin/check-confirmed.svg"
-                alt=""
-                width={13}
-                height={13}
-                className="size-3.25 shrink-0"
+              <Icon
+                icon="mdi:check-circle"
+                className="size-3.5 shrink-0"
+                aria-hidden
               />
               Confirmed — {payment.confirmedAt}
             </p>

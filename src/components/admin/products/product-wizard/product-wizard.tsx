@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { EditorTabs } from "@/components/admin/products/product-wizard/editor-tabs";
@@ -16,38 +16,60 @@ import {
   createEmptyProductForm,
   WIZARD_STEPS,
 } from "@/components/admin/products/product-wizard/product-form-types";
-import { Notice } from "@/components/ui/notice";
+import { useCreateProduct } from "@/hooks/use-create-product";
+import { ApiError } from "@/lib/api/types";
+import { toast } from "sonner";
 
 export type ProductWizardProps = Readonly<{
   onClose: () => void;
+  onCreated?: () => void;
 }>;
 
 const secondaryButtonClass =
-  "cursor-pointer rounded border border-line-default bg-surface-base px-4 py-2 text-body-sm font-medium text-ink-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent";
+  "cursor-pointer rounded border border-line-default bg-surface-base px-4 py-2 text-body-sm font-medium text-ink-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent disabled:cursor-not-allowed disabled:opacity-60";
 
 const primaryButtonClass =
-  "flex cursor-pointer items-center justify-center gap-2 rounded bg-brand-accent px-4 py-2 text-body font-medium text-ink-on-deep transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent motion-reduce:transition-none";
+  "flex cursor-pointer items-center justify-center gap-2 rounded bg-brand-accent px-4 py-2 text-body font-medium text-ink-on-deep transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-60";
+
+function resolveCreateError(error: unknown): string {
+  if (error instanceof ApiError) {
+    if (Array.isArray(error.details)) {
+      return error.message;
+    }
+    return error.message;
+  }
+  if (error instanceof Error) return error.message;
+  return "Unable to create product. Please try again.";
+}
 
 export function ProductWizard(props: Readonly<ProductWizardProps>) {
-  const { onClose } = props;
-  /* One form instance for all four steps, so moving between them — forwards
-     via Next or backwards via the tabs — never discards what was typed. */
+  const { onClose, onCreated } = props;
   const form = useForm<ProductFormValues>({
     defaultValues: createEmptyProductForm(),
   });
   const [step, setStep] = useState<WizardStepId>("details");
-  const [submitted, setSubmitted] = useState(false);
+  const createProductMutation = useCreateProduct({
+    onSuccess: (data) => {
+      toast.success("Product added", {
+        description: `${data.product.name} was created successfully.`,
+      });
+      onCreated?.();
+      onClose();
+    },
+  });
 
   const stepIndex = WIZARD_STEPS.findIndex((entry) => entry.id === step);
   const isLastStep = stepIndex === WIZARD_STEPS.length - 1;
+  const isPending = createProductMutation.isPending;
+  const createError = createProductMutation.error
+    ? resolveCreateError(createProductMutation.error)
+    : null;
 
   function goToStep(next: WizardStepId) {
-    setSubmitted(false);
+    createProductMutation.reset();
     setStep(next);
   }
 
-  /* Validation lives on the fields themselves; trigger() surfaces it and, if
-     the offending field is on an earlier step, sends the user back to it. */
   async function handlePrimary() {
     const valid = await form.trigger();
 
@@ -61,11 +83,9 @@ export function ProductWizard(props: Readonly<ProductWizardProps>) {
       return;
     }
 
-    // No admin API yet — the draft is complete but nothing persists it.
-    setSubmitted(true);
+    createProductMutation.reset();
+    await createProductMutation.mutateAsync(form.getValues());
   }
-
-  const values = form.getValues();
 
   return (
     <FormProvider {...form}>
@@ -87,12 +107,10 @@ export function ProductWizard(props: Readonly<ProductWizardProps>) {
             {step === "nutrition" ? <StepNutrition /> : null}
           </div>
 
-          {submitted ? (
-            <Notice className="mt-6">
-              Draft complete — {values.name} with {values.skus.length} pack
-              size(s). Nothing was saved: the admin API does not exist yet, so
-              this screen has nowhere to send it.
-            </Notice>
+          {createError ? (
+            <p role="alert" className="mt-6 text-caption text-state-critical">
+              {createError}
+            </p>
           ) : null}
         </div>
 
@@ -100,6 +118,7 @@ export function ProductWizard(props: Readonly<ProductWizardProps>) {
           <button
             type="button"
             onClick={onClose}
+            disabled={isPending}
             className={secondaryButtonClass}
           >
             Cancel
@@ -107,17 +126,16 @@ export function ProductWizard(props: Readonly<ProductWizardProps>) {
           <button
             type="button"
             onClick={handlePrimary}
+            disabled={isPending}
             className={primaryButtonClass}
           >
-            {isLastStep ? "Add product" : "Next"}
+            {isLastStep
+              ? isPending
+                ? "Saving…"
+                : "Add product"
+              : "Next"}
             {isLastStep ? null : (
-              <Image
-                src="/icons/admin/chevron-right-light.svg"
-                alt=""
-                width={24}
-                height={24}
-                className="size-6"
-              />
+              <Icon icon="mdi:chevron-right" className="size-6" aria-hidden />
             )}
           </button>
         </div>

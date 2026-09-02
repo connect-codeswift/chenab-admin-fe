@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 import { useEffect, useRef, type ReactNode } from "react";
 
 export type ModalProps = Readonly<{
@@ -70,15 +70,9 @@ export function Modal(props: Readonly<ModalProps>) {
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+            className="cursor-pointer rounded text-ink-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
           >
-            <Image
-              src="/icons/admin/close.svg"
-              alt=""
-              width={18}
-              height={18}
-              className="size-4.5"
-            />
+            <Icon icon="mdi:close" className="size-4.5" aria-hidden />
           </button>
         </div>
         <div className="flex min-h-0 flex-1 flex-col">{children}</div>

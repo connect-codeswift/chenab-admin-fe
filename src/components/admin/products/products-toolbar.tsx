@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 export type ProductsToolbarProps = Readonly<{
   search: string;
@@ -17,13 +17,10 @@ export function ProductsToolbar(props: Readonly<ProductsToolbarProps>) {
         <label className="sr-only" htmlFor="products-search">
           Search products
         </label>
-        <Image
-          src="/icons/search-muted.svg"
-          alt=""
-          width={16}
-          height={16}
+        <Icon
+          icon="mdi:magnify"
+          className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-subtle"
           aria-hidden
-          className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
         />
         <input
           id="products-search"
@@ -40,13 +37,7 @@ export function ProductsToolbar(props: Readonly<ProductsToolbarProps>) {
         onClick={onAddProduct}
         className="inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded bg-brand-accent px-5 py-2.5 text-body-sm font-medium text-surface-base transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent motion-reduce:transition-none"
       >
-        <Image
-          src="/icons/admin/plus.svg"
-          alt=""
-          width={15}
-          height={15}
-          className="size-3.75"
-        />
+        <Icon icon="mdi:plus" className="size-4" aria-hidden />
         Add product
       </button>
     </div>

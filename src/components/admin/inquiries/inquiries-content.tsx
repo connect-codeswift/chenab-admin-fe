@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { InquiryDetailPanel } from "@/components/admin/inquiries/inquiry-detail-panel";
 import type { InquiryDetailValues } from "@/components/admin/inquiries/inquiry-detail-panel";
@@ -82,12 +82,10 @@ export function InquiriesContent(props: Readonly<InquiriesContentProps>) {
             <span className="sr-only">
               {open ? "Hide" : "Show"} {row.original.company} details
             </span>
-            <Image
-              src="/icons/admin/chevron-down.svg"
-              alt=""
-              width={14}
-              height={14}
+            <Icon
+              icon="mdi:chevron-down"
               className={`size-3.5 transition-transform duration-200 motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+              aria-hidden
             />
           </button>
         );

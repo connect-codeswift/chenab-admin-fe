@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { Icon } from "@iconify/react";
 import type {
   DashboardStat,
   StatArrow,
@@ -25,9 +27,9 @@ const valueClassByTone: Record<StatTone, string> = {
   light: "text-h2 text-ink-primary",
 };
 
-const arrowIconByTone: Record<StatTone, string> = {
-  dark: "/icons/admin/stat-arrow-light.svg",
-  light: "/icons/admin/stat-arrow.svg",
+const arrowClassByTone: Record<StatTone, string> = {
+  dark: "text-ink-on-deep",
+  light: "text-ink-primary",
 };
 
 const rotationByArrow: Record<StatArrow, string> = {
@@ -36,8 +38,8 @@ const rotationByArrow: Record<StatArrow, string> = {
 };
 
 const trendIconByTrend: Record<StatTrend, string> = {
-  positive: "/icons/admin/trend-up.svg",
-  critical: "/icons/admin/trend-down.svg",
+  positive: "mdi:trending-up",
+  critical: "mdi:trending-down",
 };
 
 const noteClassByTrend: Record<StatTrend, string> = {
@@ -54,24 +56,20 @@ export function StatCard(props: Readonly<StatCardProps>) {
     >
       <div className="flex items-center justify-between gap-2">
         <h2 className={labelClassByTone[stat.tone]}>{stat.label}</h2>
-        <Image
-          src={arrowIconByTone[stat.tone]}
-          alt=""
-          width={24}
-          height={24}
-          className={`size-6 shrink-0 ${rotationByArrow[stat.arrow]}`}
+        <Icon
+          icon="mdi:arrow-up"
+          className={`size-6 shrink-0 ${arrowClassByTone[stat.tone]} ${rotationByArrow[stat.arrow]}`}
+          aria-hidden
         />
       </div>
 
       <div className="flex flex-col gap-1">
         <p className={valueClassByTone[stat.tone]}>{stat.value}</p>
         <p className="flex items-center gap-1 pt-1">
-          <Image
-            src={trendIconByTrend[stat.trend]}
-            alt=""
-            width={18}
-            height={18}
-            className={`size-4.5 shrink-0 ${rotationByArrow[stat.arrow]}`}
+          <Icon
+            icon={trendIconByTrend[stat.trend]}
+            className={`size-4.5 shrink-0 ${noteClassByTrend[stat.trend]} ${rotationByArrow[stat.arrow]}`}
+            aria-hidden
           />
           <span className={`text-tiny ${noteClassByTrend[stat.trend]}`}>
             {stat.note}

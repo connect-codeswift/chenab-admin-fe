@@ -4,28 +4,27 @@ export type AdminNavLink = Readonly<{
   icon: string;
 }>;
 
-/* Sidebar navigation — Figma node 166:3063. Only Dashboard is built; the rest
-   land with their own screens. */
+/* Sidebar navigation — Figma node 166:3063. Icons are Iconify names. */
 export const adminNavLinks: readonly AdminNavLink[] = [
   {
     href: "/",
     label: "Dashboard",
-    icon: "/icons/admin/nav-dashboard.svg",
+    icon: "mdi:view-dashboard-outline",
   },
   {
     href: "/orders",
     label: "Orders",
-    icon: "/icons/admin/nav-orders.svg",
+    icon: "mdi:clipboard-list-outline",
   },
   {
     href: "/products",
     label: "Products",
-    icon: "/icons/admin/nav-products.svg",
+    icon: "mdi:package-variant-closed",
   },
   {
     href: "/inquiries",
     label: "Inquiries",
-    icon: "/icons/admin/nav-inquiries.svg",
+    icon: "mdi:message-text-outline",
   },
 ];
 

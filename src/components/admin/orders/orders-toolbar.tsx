@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Icon } from "@iconify/react";
 import {
   ORDER_FILTER_LABEL,
   ORDER_STATUS_FILTERS,
@@ -31,13 +31,10 @@ export function OrdersToolbar(props: Readonly<OrdersToolbarProps>) {
         <label className="sr-only" htmlFor="orders-search">
           Search orders
         </label>
-        <Image
-          src="/icons/search-muted.svg"
-          alt=""
-          width={16}
-          height={16}
+        <Icon
+          icon="mdi:magnify"
+          className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-subtle"
           aria-hidden
-          className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
         />
         <input
           id="orders-search"

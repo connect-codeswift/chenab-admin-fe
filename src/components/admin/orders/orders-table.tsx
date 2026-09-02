@@ -59,7 +59,7 @@ const columns = helper.columns([
     header: "Reference",
     cell: (info) => (
       <Link
-        href={`/admin/orders/${info.getValue()}`}
+        href={`/orders/${info.getValue()}`}
         className="rounded hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
       >
         {info.getValue()}

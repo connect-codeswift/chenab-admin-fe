@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { OrderStatusPill } from "@/components/admin/orders/order-status-pill";
 import type { OrderStatus } from "@/components/admin/orders/orders-types";
@@ -18,15 +20,9 @@ export function OrderSummaryBar(props: Readonly<OrderSummaryBarProps>) {
       <Link
         href="/orders"
         aria-label="Back to orders"
-        className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+        className="shrink-0 rounded text-ink-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
       >
-        <Image
-          src="/icons/admin/arrow-back.svg"
-          alt=""
-          width={28}
-          height={28}
-          className="size-7"
-        />
+        <Icon icon="mdi:arrow-left" className="size-7" aria-hidden />
       </Link>
 
       <div className="flex min-w-0 flex-col gap-2">

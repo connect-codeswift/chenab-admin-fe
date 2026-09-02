@@ -1,7 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { DetailContentTab } from "@/components/admin/products/product-detail/detail-content-tab";
 import { ProductDetailHeader } from "@/components/admin/products/product-detail/product-detail-header";
 import type { ProductDetail } from "@/components/admin/products/product-detail/product-detail-data";
@@ -13,18 +15,71 @@ import type {
   ProductFormValues,
   WizardStepId,
 } from "@/components/admin/products/product-wizard/product-form-types";
-import { Notice } from "@/components/ui/notice";
+import { Modal } from "@/components/ui/modal";
+import { useDeleteProduct } from "@/hooks/use-delete-product";
+import { useUpdateProduct } from "@/hooks/use-update-product";
+import { ApiError } from "@/lib/api/types";
+import { toProductDetail } from "@/components/admin/products/product-detail/product-detail-data";
 
 export type ProductDetailEditorProps = Readonly<{
   detail: ProductDetail;
 }>;
 
+const secondaryButtonClass =
+  "cursor-pointer rounded border border-line-default bg-surface-base px-4 py-2 text-body-sm font-medium text-ink-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent disabled:cursor-not-allowed disabled:opacity-60";
+
+const dangerButtonClass =
+  "cursor-pointer rounded bg-state-critical px-4 py-2 text-body-sm font-medium text-surface-base transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent disabled:cursor-not-allowed disabled:opacity-60";
+
+function resolveMutationError(error: unknown, fallback: string): string {
+  if (error instanceof ApiError) return error.message;
+  if (error instanceof Error) return error.message;
+  return fallback;
+}
+
 export function ProductDetailEditor(props: Readonly<ProductDetailEditorProps>) {
-  const { detail } = props;
-  /* One form across all four tabs, so switching tabs never drops an edit. */
-  const form = useForm<ProductFormValues>({ defaultValues: detail.values });
+  const { detail: initialDetail } = props;
+  const router = useRouter();
+  const [detail, setDetail] = useState(initialDetail);
+  const form = useForm<ProductFormValues>({ defaultValues: initialDetail.values });
   const [tab, setTab] = useState<WizardStepId>("details");
-  const [notice, setNotice] = useState<string>();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const updateProductMutation = useUpdateProduct({
+    onSuccess: (data) => {
+      const next = toProductDetail(data.product);
+      setDetail(next);
+      form.reset(next.values);
+      toast.success("Product updated", {
+        description: `${data.product.name} was saved successfully.`,
+      });
+    },
+  });
+
+  const deleteProductMutation = useDeleteProduct({
+    onSuccess: () => {
+      toast.success("Product deleted", {
+        description: `${detail.row.name} was removed.`,
+      });
+      setConfirmOpen(false);
+      router.replace("/products");
+    },
+  });
+
+  const isSaving = updateProductMutation.isPending;
+  const isDeleting = deleteProductMutation.isPending;
+  const saveError = updateProductMutation.error
+    ? resolveMutationError(
+        updateProductMutation.error,
+        "Unable to save product. Please try again.",
+      )
+    : null;
+  const deleteError = deleteProductMutation.error
+    ? resolveMutationError(
+        deleteProductMutation.error,
+        "Unable to delete product. Please try again.",
+      )
+    : null;
 
   async function handleSave() {
     const valid = await form.trigger();
@@ -34,16 +89,16 @@ export function ProductDetailEditor(props: Readonly<ProductDetailEditorProps>) {
       return;
     }
 
-    // No admin API yet — nothing persists these edits.
-    setNotice(
-      `Changes to ${form.getValues().name} are valid but were not saved: the admin API does not exist yet.`,
-    );
+    updateProductMutation.reset();
+    await updateProductMutation.mutateAsync({
+      id: detail.row.id,
+      values: form.getValues(),
+    });
   }
 
-  function handleDelete() {
-    setNotice(
-      "Delete is not wired: it needs the admin API and a confirmation step.",
-    );
+  async function confirmDelete() {
+    deleteProductMutation.reset();
+    await deleteProductMutation.mutateAsync(detail.row.id);
   }
 
   return (
@@ -55,8 +110,13 @@ export function ProductDetailEditor(props: Readonly<ProductDetailEditorProps>) {
         <ProductDetailHeader
           product={detail.row}
           priceRange={detail.priceRange}
-          onSave={handleSave}
-          onDelete={handleDelete}
+          onSave={() => void handleSave()}
+          onDelete={() => {
+            deleteProductMutation.reset();
+            setConfirmOpen(true);
+          }}
+          isSaving={isSaving}
+          isDeleting={isDeleting}
         />
 
         <div className="rounded border border-line-subtle/70 bg-surface-base p-4 shadow-xs sm:p-6 lg:p-7">
@@ -67,15 +127,62 @@ export function ProductDetailEditor(props: Readonly<ProductDetailEditorProps>) {
           />
 
           <div className="bg-white pt-6 shadow-xs">
-            {tab === "details" ? <StepDetails images={detail.images} /> : null}
+            {/* Editable images from form state (includes API + newly uploaded). */}
+            {tab === "details" ? <StepDetails /> : null}
             {tab === "skus" ? <StepSkus stockLabel="Stock (units)" /> : null}
             {tab === "content" ? <DetailContentTab /> : null}
             {tab === "nutrition" ? <StepNutrition /> : null}
           </div>
 
-          {notice ? <Notice className="mt-6">{notice}</Notice> : null}
+          {saveError ? (
+            <p role="alert" className="mt-6 text-caption text-state-critical">
+              {saveError}
+            </p>
+          ) : null}
         </div>
       </form>
+
+      <Modal
+        open={confirmOpen}
+        onClose={() => {
+          if (!isDeleting) setConfirmOpen(false);
+        }}
+        title="Delete product"
+        widthClass="max-w-md"
+      >
+        <div className="flex flex-col gap-6 p-6">
+          <p className="text-body-sm text-ink-muted">
+            Delete{" "}
+            <span className="font-medium text-ink-primary">{detail.row.name}</span>
+            ? This cannot be undone.
+          </p>
+
+          {deleteError ? (
+            <p role="alert" className="text-caption text-state-critical">
+              {deleteError}
+            </p>
+          ) : null}
+
+          <div className="flex items-center justify-end gap-3">
+            <button
+              type="button"
+              disabled={isDeleting}
+              onClick={() => setConfirmOpen(false)}
+              className={secondaryButtonClass}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              disabled={isDeleting}
+              onClick={() => void confirmDelete()}
+              className={dangerButtonClass}
+            >
+              {isDeleting ? "Deleting…" : "Delete"}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </FormProvider>
   );
 }
