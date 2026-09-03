@@ -40,7 +40,11 @@ const headCellClass =
   "border-b border-line-subtle pb-2.5 text-left text-caption font-medium tracking-wider text-ink-muted uppercase";
 const bodyCellClass = "border-b border-surface-sunken py-2.5 align-middle";
 
-const STATUS_OPTIONS: readonly SkuStatus[] = ["available", "unavailable"];
+const STATUS_OPTIONS: readonly SkuStatus[] = [
+  "in_stock",
+  "low_stock",
+  "out_of_stock",
+];
 
 /* Rows are react-hook-form field entries, so the table and the form always
    agree on which row is which. */

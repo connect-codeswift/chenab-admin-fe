@@ -402,3 +402,74 @@ body {
   letter-spacing: var(--text-body--letter-spacing);
   font-weight: var(--text-body--font-weight);
 }
+
+/* Sonner portals outside the body tree — force Poppins and admin tokens. */
+[data-sonner-toaster] {
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-sonner-toast] {
+  width: 22.5rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1px solid var(--color-line-default);
+  border-radius: var(--radius);
+  background: var(--color-surface-raised);
+  padding: 0.875rem 1rem;
+  box-shadow: 0 8px 24px rgb(30 30 30 / 8%);
+  color: var(--color-ink-primary);
+}
+
+[data-sonner-toast] [data-icon] {
+  margin-top: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+[data-sonner-toast] [data-content] {
+  gap: 0.125rem;
+}
+
+[data-sonner-toast] [data-title] {
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+  letter-spacing: var(--text-body-sm--letter-spacing);
+  font-weight: 500;
+  color: var(--color-ink-primary);
+}
+
+[data-sonner-toast] [data-description] {
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  letter-spacing: var(--text-caption--letter-spacing);
+  font-weight: var(--text-caption--font-weight);
+  color: var(--color-ink-muted);
+}
+
+[data-sonner-toast] [data-close-button] {
+  border: 1px solid var(--color-line-default);
+  background: var(--color-surface-raised);
+  color: var(--color-ink-muted);
+}
+
+[data-sonner-toast][data-type="success"] {
+  border-color: color-mix(in srgb, var(--color-state-positive-ink) 28%, white);
+}
+
+[data-sonner-toast][data-type="success"] [data-icon] {
+  color: var(--color-state-positive-ink);
+}
+
+[data-sonner-toast][data-type="error"] {
+  border-color: color-mix(in srgb, var(--color-state-critical) 35%, white);
+}
+
+[data-sonner-toast][data-type="error"] [data-icon] {
+  color: var(--color-state-critical);
+}
+
+[data-sonner-toast][data-type="error"] [data-title] {
+  color: var(--color-state-critical);
+}

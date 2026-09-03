@@ -24,9 +24,16 @@ export type TopProduct = Readonly<{
   revenue: number;
 }>;
 
-export type OrderStatus = "delivered" | "processing" | "pending" | "cancelled";
+export type OrderStatus =
+  | "new"
+  | "confirmed"
+  | "packed"
+  | "dispatched"
+  | "delivered"
+  | "cancelled";
 
 export type RecentOrder = Readonly<{
+  id: string;
   reference: string;
   customer: string;
   items: string;

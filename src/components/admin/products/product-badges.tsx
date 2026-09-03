@@ -1,5 +1,7 @@
 import { PRODUCT_STOCK_LABEL } from "@/components/admin/products/products-data";
+import { SKU_STATUS_LABEL } from "@/components/admin/products/product-wizard/product-form-types";
 import type { ProductStock } from "@/components/admin/products/products-types";
+import type { SkuStatus } from "@/lib/api/product-types";
 
 const badgeClass = "inline-flex rounded px-2 py-0.5 text-caption font-medium";
 
@@ -25,6 +27,26 @@ export function StockBadge(props: Readonly<StockBadgeProps>) {
   return (
     <span className={`${badgeClass} ${stockBadgeClass[stock]}`}>
       {PRODUCT_STOCK_LABEL[stock]}
+    </span>
+  );
+}
+
+export type SkuStatusBadgeProps = Readonly<{
+  status: SkuStatus;
+}>;
+
+const skuStatusBadgeClass: Record<SkuStatus, string> = {
+  in_stock: "bg-state-positive/12 text-state-positive-ink",
+  low_stock: "bg-state-warning/35 text-state-warning-ink",
+  out_of_stock: "bg-state-critical/10 text-state-critical",
+};
+
+export function SkuStatusBadge(props: Readonly<SkuStatusBadgeProps>) {
+  const { status } = props;
+
+  return (
+    <span className={`${badgeClass} ${skuStatusBadgeClass[status]}`}>
+      {SKU_STATUS_LABEL[status]}
     </span>
   );
 }

@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  StockBadge,
+  SkuStatusBadge,
   VisibilityBadge,
 } from "@/components/admin/products/product-badges";
 import type { ProductRow } from "@/components/admin/products/products-types";
@@ -63,7 +63,7 @@ export function ProductDetailHeader(props: Readonly<ProductDetailHeaderProps>) {
               ·
             </span>
             <span className="text-body-sm text-ink-muted">{priceRange}</span>
-            <StockBadge stock={product.stock} />
+            <SkuStatusBadge status={product.status} />
             <VisibilityBadge visible={product.visible} />
           </div>
         </div>

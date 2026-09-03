@@ -9,6 +9,7 @@ import {
   isAdminNavLinkActive,
   type AdminNavLink,
 } from "@/components/admin/admin-nav";
+import { useNotifications } from "@/hooks/use-notifications";
 import { logout } from "@/lib/auth/logout";
 
 const linkBaseClass =
@@ -23,9 +24,13 @@ const linkStateClass = {
 } as const;
 
 function AdminNavItem(
-  props: Readonly<{ link: AdminNavLink; active: boolean }>,
+  props: Readonly<{
+    link: AdminNavLink;
+    active: boolean;
+    unreadCount?: number;
+  }>,
 ) {
-  const { link, active } = props;
+  const { link, active, unreadCount = 0 } = props;
   const state = active ? "active" : "idle";
 
   return (
@@ -35,13 +40,22 @@ function AdminNavItem(
       className={`${linkBaseClass} ${linkStateClass[state]}`}
     >
       <Icon icon={link.icon} className="size-4.5 shrink-0" aria-hidden />
-      {link.label}
+      <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+        {link.label}
+        {unreadCount > 0 ? (
+          <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-brand-accent px-1.5 text-caption font-medium text-surface-base">
+            {unreadCount > 99 ? "99+" : unreadCount}
+          </span>
+        ) : null}
+      </span>
     </Link>
   );
 }
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const { data } = useNotifications();
+  const unreadCount = data?.unreadCount ?? 0;
 
   return (
     <div className="flex w-full shrink-0 flex-col overflow-clip bg-brand-deep shadow-xs backdrop-blur-md lg:fixed lg:top-5 lg:bottom-5 lg:left-5 lg:z-10 lg:w-60 lg:rounded">
@@ -75,6 +89,9 @@ export function AdminSidebar() {
               key={link.href}
               link={link}
               active={isAdminNavLinkActive(pathname, link.href)}
+              unreadCount={
+                link.href === "/notifications" ? unreadCount : undefined
+              }
             />
           ))}
         </div>

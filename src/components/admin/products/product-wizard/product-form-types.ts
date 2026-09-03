@@ -1,6 +1,8 @@
+import type { SkuStatus } from "@/lib/api/product-types";
+
 export type ProductVisibility = "visible" | "hidden";
 
-export type SkuStatus = "available" | "unavailable";
+export type { SkuStatus };
 
 /* No id of our own — useFieldArray supplies the React key. */
 export type SkuDraft = {
@@ -60,8 +62,9 @@ export const PRODUCT_CATEGORIES = [
 ] as const;
 
 export const SKU_STATUS_LABEL: Record<SkuStatus, string> = {
-  available: "Available",
-  unavailable: "Unavailable",
+  in_stock: "In stock",
+  low_stock: "Low stock",
+  out_of_stock: "Out of stock",
 };
 
 export const NUTRITION_ROWS: readonly Readonly<{
@@ -86,7 +89,7 @@ export const CERTIFICATIONS = [
 ] as const;
 
 export function createSkuDraft(size = ""): SkuDraft {
-  return { size, price: "", stock: "", status: "available", active: true };
+  return { size, price: "", stock: "", status: "in_stock", active: true };
 }
 
 export function createEmptyProductForm(): ProductFormValues {

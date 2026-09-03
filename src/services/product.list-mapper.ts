@@ -5,19 +5,21 @@ import type {
   ProductRow,
   ProductStock,
 } from "@/components/admin/products/products-types";
-import type { Product, ProductSku } from "@/lib/api/product-types";
+import type { Product, ProductSku, SkuStatus } from "@/lib/api/product-types";
 
 const FALLBACK_IMAGE = "/images/products/1.png";
 
-function stockTotal(skus: readonly ProductSku[]): number {
-  return skus.reduce((sum, sku) => sum + (Number(sku.stock) || 0), 0);
+export function deriveSkuStatus(skus: readonly ProductSku[]): SkuStatus {
+  if (skus.some((sku) => sku.status === "in_stock")) return "in_stock";
+  if (skus.some((sku) => sku.status === "low_stock")) return "low_stock";
+  return "out_of_stock";
 }
 
 export function deriveProductStock(skus: readonly ProductSku[]): ProductStock {
-  const total = stockTotal(skus);
-  if (total <= 0) return "out";
-  if (total < 20) return "low";
-  return "in-stock";
+  const status = deriveSkuStatus(skus);
+  if (status === "in_stock") return "in-stock";
+  if (status === "low_stock") return "low";
+  return "out";
 }
 
 export function toProductListRow(product: Product): ProductRow {
@@ -26,6 +28,7 @@ export function toProductListRow(product: Product): ProductRow {
     name: product.name,
     category: product.category,
     stock: deriveProductStock(product.skus),
+    status: deriveSkuStatus(product.skus),
     visible: product.visibility === "visible",
     image: product.images[0] ?? FALLBACK_IMAGE,
     packs: product.skus.map(
@@ -33,6 +36,7 @@ export function toProductListRow(product: Product): ProductRow {
         size: sku.size,
         price: Number(sku.price) || 0,
         unitsInStock: Number(sku.stock) || 0,
+        status: sku.status,
       }),
     ),
   };

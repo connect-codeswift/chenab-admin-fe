@@ -16,16 +16,20 @@ export type RecentOrdersProps = Readonly<{
 }>;
 
 const statusLabel: Record<OrderStatus, string> = {
+  new: "New",
+  confirmed: "Confirmed",
+  packed: "Packed",
+  dispatched: "Dispatched",
   delivered: "Delivered",
-  processing: "Processing",
-  pending: "Pending",
   cancelled: "Cancelled",
 };
 
 const statusPillClass: Record<OrderStatus, string> = {
+  new: "bg-surface-sunken text-ink-muted",
+  confirmed: "bg-brand-accent/12 text-brand-accent",
+  packed: "bg-brand-accent/12 text-brand-accent",
+  dispatched: "bg-surface-sunken text-ink-muted",
   delivered: "bg-state-positive/12 text-state-positive-ink",
-  processing: "bg-brand-accent/12 text-brand-accent",
-  pending: "bg-surface-sunken text-ink-muted",
   cancelled: "bg-state-critical/10 text-state-critical",
 };
 

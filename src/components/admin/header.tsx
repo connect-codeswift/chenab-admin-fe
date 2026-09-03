@@ -2,6 +2,7 @@ import {
   DASHBOARD_DATE_LABEL,
   DASHBOARD_GREETING_NAME,
 } from "@/components/admin/dashboard/dashboard-data";
+import { NotificationBell } from "@/components/admin/notifications/notification-bell";
 
 export type AdminHeaderProps = Readonly<{
   title?: string;
@@ -48,7 +49,10 @@ export function AdminHeader(props: Readonly<AdminHeaderProps>) {
           <p className="pb-1 text-body-sm text-ink-muted">{subtitle}</p>
         ) : null}
       </div>
-      {meta ? <p className="text-body-sm text-ink-muted">{meta}</p> : null}
+      <div className="flex items-center gap-3 self-end sm:self-auto">
+        <NotificationBell />
+        {meta ? <p className="text-body-sm text-ink-muted">{meta}</p> : null}
+      </div>
     </header>
   );
 }

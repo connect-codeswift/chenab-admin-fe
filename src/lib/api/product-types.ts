@@ -1,6 +1,6 @@
 export type ProductVisibility = "visible" | "hidden";
 
-export type SkuStatus = "available" | "unavailable";
+export type SkuStatus = "in_stock" | "low_stock" | "out_of_stock";
 
 export type ProductSkuPayload = {
   size: string;

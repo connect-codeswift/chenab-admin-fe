@@ -4,6 +4,7 @@ export type OrderStatus =
 export type OrderPayment = "COD" | "Bank" | "Card";
 
 export type OrderRow = Readonly<{
+  id: string;
   reference: string;
   placedOn: string;
   customer: string;

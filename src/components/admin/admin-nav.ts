@@ -26,6 +26,11 @@ export const adminNavLinks: readonly AdminNavLink[] = [
     label: "Inquiries",
     icon: "mdi:message-text-outline",
   },
+  {
+    href: "/notifications",
+    label: "Notifications",
+    icon: "mdi:bell-outline",
+  },
 ];
 
 export function isAdminNavLinkActive(pathname: string, href: string): boolean {

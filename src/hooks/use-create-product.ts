@@ -9,6 +9,7 @@ import {
 import type { ProductFormValues } from "@/components/admin/products/product-wizard/product-form-types";
 import { ApiError } from "@/lib/api/types";
 import type { CreateProductResponse } from "@/lib/api/product-types";
+import { notificationsQueryKey } from "@/hooks/use-notifications";
 import { productsQueryKey } from "@/hooks/use-products";
 import { toProductRequest } from "@/services/product.mapper";
 import { createProduct } from "@/services/product.service";
@@ -30,6 +31,7 @@ export function useCreateProduct(
     ...rest,
     onSuccess: (data, variables, onMutateResult, context) => {
       void queryClient.invalidateQueries({ queryKey: productsQueryKey });
+      void queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
       onSuccess?.(data, variables, onMutateResult, context);
     },
   });

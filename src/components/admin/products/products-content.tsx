@@ -28,7 +28,7 @@ export function ProductsContent() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [addOpen, setAddOpen] = useState(false);
-
+  console.log(data);
   const rows = useMemo(
     () => (data?.products ?? []).map(toProductListRow),
     [data?.products],

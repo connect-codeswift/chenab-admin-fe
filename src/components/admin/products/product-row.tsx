@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import {
-  StockBadge,
+  SkuStatusBadge,
   VisibilityBadge,
 } from "@/components/admin/products/product-badges";
 import type { ProductRow as ProductRowData } from "@/components/admin/products/products-types";
@@ -48,7 +48,7 @@ export function ProductRow(props: Readonly<ProductRowProps>) {
         </span>
 
         <span className="flex shrink-0 items-center gap-2.5">
-          <StockBadge stock={product.stock} />
+          <SkuStatusBadge status={product.status} />
           <VisibilityBadge visible={product.visible} />
           <button
             type="button"
@@ -78,6 +78,7 @@ export function ProductRow(props: Readonly<ProductRowProps>) {
             >
               <span className="text-body-sm text-ink-primary">{pack.size}</span>
               <span className="flex items-center gap-4">
+                <SkuStatusBadge status={pack.status} />
                 <span className="text-caption text-ink-muted">
                   {pack.unitsInStock} in stock
                 </span>
